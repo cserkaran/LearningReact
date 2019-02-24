@@ -13,19 +13,30 @@ function Hero(){
   );
 }
 
-function Book({title}){
-  return (<div className="answer">
+function Book({title,onClick}){
+  return (<div className="answer" onClick={() => {onClick(title);}} >
     <h4>{title}</h4>
   </div>)
 }
 
-function Turn({author,books}){
-  return(<div className="row turn" style={{ backgroundColor:"white"}}>
+function Turn({author,books,highlight,onAnwserSelected}){
+
+  function highlightToBgColor(highlight){
+    const mapping = { 
+      'none': '',
+      'correct' : 'green',
+      'wrong' : 'red'
+    };
+
+    return mapping[highlight];
+  }
+
+  return(<div className="row turn" style={{ backgroundColor: highlightToBgColor(highlight)}}>
     <div className="col-4 offset-1">
       <img src={author.imageUrl} className="authorImage" alt="Author"></img>
     </div>
     <div className="col-6">
-      {books.map((title) =>  <Book title={title} key={title}></Book>)}
+      {books.map((title) =>  <Book title={title} key={title} onClick={onAnwserSelected} />)}
     </div> 
   </div>);
 }
@@ -36,19 +47,19 @@ function Continue() {
 
 function Footer(){
   return(<div id="footer" className="row">
-    <p className="col-12">
+    <div className="col-12">
       <p className="text-muted credit">All images are from <a href="http://commons.wikimedia.org/wiki/Main">Wikimedia Commons</a></p>
-    </p>
+    </div>
   </div>);
 }
 
 
-function AuthorQuiz({turnData}) {
+function AuthorQuiz({turnData,highlight,onAnwserSelected}) {
  
     return (
       <div className="container-fluid">
          <Hero/>
-         <Turn {...turnData}/>
+         <Turn {...turnData} highlight={highlight} onAnwserSelected={onAnwserSelected}/>
          <Continue/>
          <Footer/>
       </div>
