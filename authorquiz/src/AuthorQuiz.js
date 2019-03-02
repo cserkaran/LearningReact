@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import './bootstrap.min.css'
+import { Link } from 'react-router-dom';
 
 function Hero(){
   return (
@@ -41,8 +42,17 @@ function Turn({author,books,highlight,onAnwserSelected}){
   </div>);
 }
 
-function Continue() { 
-  return(<div/>);
+function Continue({show,onContinue}) { 
+  return(
+    <div className="   continue">
+    {
+      show ? 
+        <div className="col-11">
+          <button className="btn btn-primary btn-lg float-right" onClick={onContinue}>Continue</button>
+        </div>
+        : null
+    }</div>
+  );
 }
 
 function Footer(){
@@ -53,15 +63,15 @@ function Footer(){
   </div>);
 }
 
-
-function AuthorQuiz({turnData,highlight,onAnwserSelected}) {
+function AuthorQuiz({turnData,highlight,onAnwserSelected,onContinue}) {
  
     return (
       <div className="container-fluid">
          <Hero/>
          <Turn {...turnData} highlight={highlight} onAnwserSelected={onAnwserSelected}/>
-         <Continue/>
+         <Continue show={highlight === 'correct'} onContinue={onContinue}/>
          <Footer/>
+         <p><Link to="/add">Add and author</Link></p>
       </div>
     );
 }
