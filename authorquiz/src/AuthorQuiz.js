@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import './bootstrap.min.css'
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 function Hero(){
   return (
@@ -63,8 +64,27 @@ function Footer(){
   </div>);
 }
 
-function AuthorQuiz({turnData,highlight,onAnwserSelected,onContinue}) {
- 
+function mapStateToProps(state){
+  return { 
+    turnData : state.turnData, 
+    highlight: state.highlight
+  }
+}
+
+function mapDispatchToProps(dispatch){
+  return { 
+    onAnwserSelected: (answer) => 
+    { 
+      dispatch({ type: 'ANSWER_SELECTED', answer});
+    },
+    onContinue: () => { 
+      dispatch({ type : 'CONTINUE'});
+    }
+  }
+}
+
+const AuthorQuiz = connect(mapStateToProps,mapDispatchToProps)(
+  function ({turnData,highlight,onAnwserSelected,onContinue}) {
     return (
       <div className="container-fluid">
          <Hero/>
@@ -74,6 +94,6 @@ function AuthorQuiz({turnData,highlight,onAnwserSelected,onContinue}) {
          <p><Link to="/add">Add and author</Link></p>
       </div>
     );
-}
+}  );
 
 export default AuthorQuiz;
